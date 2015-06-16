@@ -1,5 +1,3 @@
-import queue
-
 # directions
 x_dir = [0, 1, 0, -1]
 y_dir = [1, 0, -1, 0]
@@ -8,11 +6,9 @@ y_dir = [1, 0, -1, 0]
 visited = []
 maps = []
 
-
 # bfs algorithm
 def bfs(h, w, cheese, sx, sy, moves):
-    que = queue.Queue()
-    que.put((moves, sx, sy))
+    que = [(moves, sx, sy)]
 
     for i in range(h):
         for j in range(w):
@@ -20,8 +16,8 @@ def bfs(h, w, cheese, sx, sy, moves):
 
     visited[sy][sx] = False
 
-    while que.qsize() > 0:
-        c_moves, c_x, c_y = que.get()
+    while len(que) > 0:
+        c_moves, c_x, c_y = que.pop(0)
         if maps[c_y][c_x] == cheese:
             return (c_moves, c_x, c_y)
 
@@ -30,21 +26,18 @@ def bfs(h, w, cheese, sx, sy, moves):
             n_y = c_y + y_dir[i]
 
             if(0 <= n_x < w and 0 <= n_y < h and visited[n_y][n_x]):
-                que.put((c_moves+1, n_x, n_y))
+                que.append((c_moves+1, n_x, n_y))
                 visited[n_y][n_x] = False
 
     return (-1, -1, -1)
 
-
 # main function
 if __name__ == '__main__':
-    str = (input()).split()
+    inputs = (input()).split()
 
-    H = int(str[0])
-    W = int(str[1])
-    N = int(str[2])
-
-    del str
+    H = int(inputs[0])
+    W = int(inputs[1])
+    N = int(inputs[2])
 
     visited = [[True for i in range(W)] for j in range(H)]
     maps = ["" for i in range(H)]
